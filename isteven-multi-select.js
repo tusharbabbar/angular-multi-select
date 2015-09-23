@@ -33,7 +33,7 @@
 
 'use strict'
 
-angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect' , [ '$sce', '$timeout', '$templateCache', function ( $sce, $timeout, $templateCache ) {
+angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect' , [ '$sce', '$timeout', '$templateCache', '$window', function ( $sce, $timeout, $templateCache, $window ) {
     return {
         restrict:
             'AE',
@@ -638,22 +638,23 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                     helperItems = [];
                     helperItemsLength = 0;
 
+
                     angular.element( checkBoxLayer ).addClass( 'show' );
                     angular.element( clickedEl ).addClass( 'buttonClicked' );
-
-                    // Adjusting dropdown location based on position of the multiselect
-                    var window_height = $window.innerHeight;
-                    var element_top = element[0].getBoundingClientRect().top;
-                    var list_height = parseInt(checkBoxLayer.children[1].style.height.replace("px",""));
-                    if ((window_height - element_top) < list_height){
-                      var bottom = list_height + window_height - element_top;
-                      angular.element( checkBoxLayer ).css("bottom", bottom.toString() + "px")
-                    }
 
                     // Attach change event listener on the input filter.
                     // We need this because ng-change is apparently not an event listener.
                     angular.element( document ).on( 'click', $scope.externalClickListener );
                     angular.element( document ).on( 'keydown', $scope.keyboardListener );
+
+                    // Adjusting dropdown location based on position of the multiselect
+                    var window_height = $window.innerHeight;
+                    var element_top = element[0].getBoundingClientRect().top;
+                    var list_height = parseInt(checkBoxLayer.children[1].style.height.replace("px",""));
+                    if ((window_height - element_top) < list_height + 100){
+                      var bottom = list_height + window_height - element_top;
+                      angular.element( checkBoxLayer ).css("bottom", bottom.toString() + "px");
+                    }
 
                     // to get the initial tab index, depending on how many helper elements we have.
                     // priority is to always focus it on the input filter
