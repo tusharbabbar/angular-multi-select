@@ -653,7 +653,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                         var element_top = element[0].getBoundingClientRect().top;
                         var list_height = parseInt(checkBoxLayer.children[checkBoxLayer.children.length - 1].style.height.replace("px",""));
                         if ((window_height - element_top) < list_height + 100){
-                          var bottom = list_height + window_height - element_top;
+                          var bottom = window_height - element_top + 10;
                           angular.element( checkBoxLayer ).css("bottom", bottom.toString() + "px");
                         }
                     }
